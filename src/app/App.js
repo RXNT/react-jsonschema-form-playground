@@ -3,12 +3,12 @@ import applyRules from "react-jsonschema-form-conditionals";
 import PredicatesRuleEngine from "react-jsonschema-form-conditionals/dist/engine/SimplifiedRuleEngineFactory";
 // import CacheControlRulesEngine from "react-jsonschema-form-conditionals/dist/engine/CacheControlEngineFactory";
 import Form from "react-jsonschema-form";
-import { JsonEditor, Viewer } from "./Editor";
+import Error from "./Error";
+import EditorsPanel from "./EditorsPanel";
 import Selector from "./Selector";
 import samples from "./samples";
 
 let FormWithConditionals = applyRules(Form);
-const toJson = val => JSON.stringify(val, null, 2);
 
 const liveValidateSchema = { type: "boolean", title: "Live validation" };
 
@@ -32,8 +32,10 @@ export class App extends Component {
   onSchemaEdited = schema => this.setState({ schema });
   onUISchemaEdited = uiSchema => this.setState({ uiSchema });
   onFormDataEdited = formData => this.setState({ formData });
+
   onFormDataChange = ({ formData }) => this.setState({ formData });
   onSchemaConfChange = conf => this.setState({ conf });
+  onError = error => this.setState({ error });
   onExtraActionsChange = extraActions => this.setState({ extraActions });
 
   setLiveValidate = ({ formData }) => this.setState({ liveValidate: formData });
@@ -50,7 +52,8 @@ export class App extends Component {
       rules,
       extraActions,
       liveValidate,
-      conf,
+      // conf,
+      error,
     } = this.state;
 
     let Header = (
@@ -73,74 +76,69 @@ export class App extends Component {
     );
 
     let CurrentViews = (
-      <div className="row">
-        <div className="col-md-6">
-          <FormWithConditionals
-            onSchemaConfChange={this.onSchemaConfChange}
-            onChange={this.onFormDataChange}
-            rules={rules}
-            rulesEngine={PredicatesRuleEngine}
-            extraActions={extraActions}
-            liveValidate={liveValidate}
-            safeRenderCompletion={true}
-            noHtml5Validate={true}
-            formData={formData}
-            schema={schema}
-            uiSchema={uiSchema}>
-            <div />
-          </FormWithConditionals>
-        </div>
-        <div className="col-md-3">
-          <Viewer title="Conditionals schema" code={toJson(conf.schema)} />
-        </div>
-        <div className="col-md-3">
-          <Viewer title="Conditionals uiSchema" code={toJson(conf.uiSchema)} />
-        </div>
+      <div className="col-md-6">
+        <FormWithConditionals
+          onSchemaConfChange={this.onSchemaConfChange}
+          onChange={this.onFormDataChange}
+          rules={rules}
+          rulesEngine={PredicatesRuleEngine}
+          extraActions={extraActions}
+          liveValidate={liveValidate}
+          safeRenderCompletion={true}
+          noHtml5Validate={true}
+          formData={formData}
+          schema={schema}
+          uiSchema={uiSchema}>
+          <div />
+        </FormWithConditionals>
       </div>
+      //   <div className="col-md-3">
+      //     <Viewer title="Conditionals schema" code={toJson(conf.schema)} />
+      //   </div>
+      //   <div className="col-md-3">
+      //     <Viewer title="Conditionals uiSchema" code={toJson(conf.uiSchema)} />
+      //   </div>
+      // </div>
     );
+    let onError = this.onError;
 
-    let JsonEditors = (
-      <div>
-        <div className="row">
-          <div className="col-sm-6">
-            <JsonEditor
-              title="JSONSchema"
-              code={toJson(schema)}
-              onChange={this.onSchemaEdited}
-            />
-          </div>
-          <div className="col-sm-6">
-            <JsonEditor
-              title="Rules"
-              code={toJson(rules)}
-              onChange={this.onRulesEdited}
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-6">
-            <JsonEditor
-              title="UISchema"
-              code={toJson(uiSchema)}
-              onChange={this.onUISchemaEdited}
-            />
-          </div>
-          <div className="col-sm-6">
-            <JsonEditor
-              title="formData"
-              code={toJson(formData)}
-              onChange={this.onFormDataEdited}
-            />
-          </div>
-        </div>
-      </div>
-    );
+    let editors = [
+      {
+        type: "json",
+        title: "JSON schema",
+        source: schema,
+        onChange: this.onSchemaEdited,
+        onError,
+      },
+      {
+        type: "json",
+        title: "UI schema",
+        source: uiSchema,
+        onChange: this.onUISchemaEdited,
+        onError,
+      },
+      {
+        type: "json",
+        title: "Rules",
+        source: rules,
+        onChange: this.onRulesEdited,
+        onError,
+      },
+      {
+        type: "json",
+        title: "Form Data",
+        source: formData,
+        onChange: this.onFormDataEdited,
+        onError,
+      },
+    ];
 
     return (
       <div className="container-fluid">
         {Header}
+        <Error error={error} />
         {CurrentViews}
-        {JsonEditors}
+        <EditorsPanel active={editors[0].title} editors={editors} />
       </div>
     );
   }

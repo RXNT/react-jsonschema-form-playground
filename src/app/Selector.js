@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { shouldRender } from "./playgroundUtils";
+import { shouldRender } from "./utils";
 import samples from "./samples";
 import PropTypes from "prop-types";
 

@@ -7,7 +7,7 @@ import "codemirror/mode/markdown/markdown";
 // bootstrap ones.
 import "codemirror/lib/codemirror.css";
 
-import { shouldRender } from "./playgroundUtils";
+import { shouldRender } from "./utils";
 
 // Patching CodeMirror#componentWillReceiveProps so it's executed synchronously
 // Ref https://github.com/mozilla-services/react-jsonschema-form/issues/174
