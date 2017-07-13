@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { JsonEditor } from "./Editor";
+import { JsonEditor, Viewer } from "./Editor";
 import PropTypes from "prop-types";
 
 const toJson = val => JSON.stringify(val, null, 2);
@@ -7,12 +7,31 @@ const toJson = val => JSON.stringify(val, null, 2);
 export default class JsonEditors extends Component {
   setActive = active => this.setState({ active });
 
+  toView = editor => {
+    switch (editor.type) {
+      case "viewer": {
+        let { title, source } = editor;
+        return <Viewer title={title} code={toJson(source)} />;
+      }
+      case "json": {
+        let { title, source, onChange, onError } = editor;
+        return (
+          <JsonEditor
+            title={title}
+            code={toJson(source)}
+            onChange={onChange}
+            onError={onError}
+          />
+        );
+      }
+    }
+  };
+
   render() {
     let { editors } = this.props;
     let activeTitle =
       this.state && this.state.active ? this.state.active : this.props.active;
     let activeEditor = editors.find(editor => editor.title === activeTitle);
-    let { title, source, onChange, onError } = activeEditor;
 
     return (
       <div className="col-md-6">
@@ -29,12 +48,7 @@ export default class JsonEditors extends Component {
           )}
         </ul>
         <br />
-        <JsonEditor
-          title={title}
-          code={toJson(source)}
-          onChange={onChange}
-          onError={onError}
-        />
+        {this.toView(activeEditor)}
       </div>
     );
   }

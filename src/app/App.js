@@ -5,12 +5,10 @@ import PredicatesRuleEngine from "react-jsonschema-form-conditionals/dist/engine
 import Form from "react-jsonschema-form";
 import Error from "./Error";
 import EditorsPanel from "./EditorsPanel";
-import Selector from "./Selector";
+import Header from "./Header";
 import samples from "./samples";
 
 let FormWithConditionals = applyRules(Form);
-
-const liveValidateSchema = { type: "boolean", title: "Live validation" };
 
 export class App extends Component {
   constructor(props) {
@@ -35,10 +33,11 @@ export class App extends Component {
 
   onFormDataChange = ({ formData }) => this.setState({ formData });
   onSchemaConfChange = conf => this.setState({ conf });
-  onError = error => this.setState({ error });
-  onExtraActionsChange = extraActions => this.setState({ extraActions });
 
-  setLiveValidate = ({ formData }) => this.setState({ liveValidate: formData });
+  onUpdateMeta = formParams => this.setState({ formParams });
+  onError = error => this.setState({ error });
+
+  onExtraActionsChange = extraActions => this.setState({ extraActions });
 
   load = data => {
     this.setState({ form: false }, _ => this.setState({ ...data, form: true }));
@@ -51,29 +50,10 @@ export class App extends Component {
       formData,
       rules,
       extraActions,
-      liveValidate,
-      // conf,
+      formParams,
+      conf,
       error,
     } = this.state;
-
-    let Header = (
-      <div className="page-header">
-        <h1>react-jsonschema-form</h1>
-        <div className="row">
-          <div className="col-sm-8">
-            <Selector onSelected={this.load} />
-          </div>
-          <div className="col-sm-2">
-            <Form
-              schema={liveValidateSchema}
-              formData={liveValidate}
-              onChange={this.setLiveValidate}>
-              <div />
-            </Form>
-          </div>
-        </div>
-      </div>
-    );
 
     let CurrentViews = (
       <div className="col-md-6">
@@ -83,22 +63,12 @@ export class App extends Component {
           rules={rules}
           rulesEngine={PredicatesRuleEngine}
           extraActions={extraActions}
-          liveValidate={liveValidate}
-          safeRenderCompletion={true}
-          noHtml5Validate={true}
+          {...formParams}
           formData={formData}
           schema={schema}
-          uiSchema={uiSchema}>
-          <div />
-        </FormWithConditionals>
+          uiSchema={uiSchema}
+        />
       </div>
-      //   <div className="col-md-3">
-      //     <Viewer title="Conditionals schema" code={toJson(conf.schema)} />
-      //   </div>
-      //   <div className="col-md-3">
-      //     <Viewer title="Conditionals uiSchema" code={toJson(conf.uiSchema)} />
-      //   </div>
-      // </div>
     );
     let onError = this.onError;
 
@@ -131,11 +101,25 @@ export class App extends Component {
         onChange: this.onFormDataEdited,
         onError,
       },
+      {
+        type: "viewer",
+        title: "Active Schema",
+        source: conf.schema,
+      },
+      {
+        type: "viewer",
+        title: "Active UI Schema",
+        source: conf.uiSchema,
+      },
     ];
 
     return (
       <div className="container-fluid">
-        {Header}
+        <Header
+          load={this.load}
+          onUpdateMeta={this.onUpdateMeta}
+          formParams={this.state.formParams}
+        />
         <Error error={error} />
         {CurrentViews}
         <EditorsPanel active={editors[0].title} editors={editors} />
