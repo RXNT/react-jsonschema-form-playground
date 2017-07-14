@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { JsonEditor, Viewer } from "./Editor";
+import Viewer from "./Viewer";
+import JSEditor from "./JSEditor";
+import JsonEditor from "./JSONEditor";
 import PropTypes from "prop-types";
 
 const toJson = val => JSON.stringify(val, null, 2);
@@ -19,6 +21,17 @@ export default class JsonEditors extends Component {
           <JsonEditor
             title={title}
             code={toJson(source)}
+            onChange={onChange}
+            onError={onError}
+          />
+        );
+      }
+      case "js": {
+        let { title, source, onChange, onError } = editor;
+        return (
+          <JSEditor
+            title={title}
+            code={source}
             onChange={onChange}
             onError={onError}
           />

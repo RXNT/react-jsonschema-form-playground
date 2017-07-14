@@ -52,6 +52,3 @@ export default class JSEditor extends Component {
     );
   }
 }
-/**
- * Created by mavarazy on 7/5/17.
- */

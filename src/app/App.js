@@ -3,8 +3,7 @@ import applyRules from "react-jsonschema-form-conditionals";
 import PredicatesRuleEngine from "react-jsonschema-form-conditionals/dist/engine/SimplifiedRuleEngineFactory";
 // import CacheControlRulesEngine from "react-jsonschema-form-conditionals/dist/engine/CacheControlEngineFactory";
 import Form from "react-jsonschema-form";
-import Error from "./Error";
-import EditorsPanel from "./EditorsPanel";
+import EditorsPanel from "./editor/EditorsPanel";
 import Header from "./Header";
 import samples from "./samples";
 
@@ -35,7 +34,6 @@ export class App extends Component {
   onSchemaConfChange = conf => this.setState({ conf });
 
   onUpdateMeta = formParams => this.setState({ formParams });
-  onError = error => this.setState({ error });
 
   onExtraActionsChange = extraActions => this.setState({ extraActions });
 
@@ -52,14 +50,13 @@ export class App extends Component {
       extraActions,
       formParams,
       conf,
-      error,
     } = this.state;
 
     let CurrentViews = (
       <div className="col-md-6">
         <FormWithConditionals
           onSchemaConfChange={this.onSchemaConfChange}
-          onChange={this.onFormDataChange}
+          // onChange={this.onFormDataChange}
           rules={rules}
           rulesEngine={PredicatesRuleEngine}
           extraActions={extraActions}
@@ -120,7 +117,6 @@ export class App extends Component {
           onUpdateMeta={this.onUpdateMeta}
           formParams={this.state.formParams}
         />
-        <Error error={error} />
         {CurrentViews}
         <EditorsPanel active={editors[0].title} editors={editors} />
       </div>
