@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "json-rules-engine-simplified": "^0.1.3",
+    "jsonschema-structure-validator": "0.0.2",
     "predicate": "^1.0.0",
     "prop-types": "^15.5.10",
     "react-jsonschema-form": "^0.49.0",

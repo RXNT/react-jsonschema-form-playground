@@ -3,6 +3,7 @@ import applyRules from "react-jsonschema-form-conditionals";
 import PredicatesRuleEngine from "react-jsonschema-form-conditionals/dist/engine/SimplifiedRuleEngineFactory";
 // import CacheControlRulesEngine from "react-jsonschema-form-conditionals/dist/engine/CacheControlEngineFactory";
 import Form from "react-jsonschema-form";
+import schemaValidator from "jsonschema-structure-validator";
 import EditorsPanel from "./editor/EditorsPanel";
 import Header from "./Header";
 import samples from "./samples";
@@ -26,7 +27,10 @@ export class App extends Component {
   }
 
   onRulesEdited = rules => this.setState({ rules });
-  onSchemaEdited = schema => this.setState({ schema });
+  onSchemaEdited = schema => {
+    schemaValidator(schema);
+    this.setState({ schema });
+  };
   onUISchemaEdited = uiSchema => this.setState({ uiSchema });
   onFormDataEdited = formData => this.setState({ formData });
 
