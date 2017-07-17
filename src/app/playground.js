@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import EditorsPanel from "./editor/EditorsPanel";
 import Header from "./Header";
 
-let DEFAULT_EDITORS = [
+export const DEFAULT_EDITORS = [
   {
     type: "json",
     title: "Schema",
@@ -15,40 +15,20 @@ let DEFAULT_EDITORS = [
   },
   {
     type: "json",
-    title: "Rules",
-    prop: "rules",
-  },
-  {
-    type: "json",
     title: "Data",
     prop: "formData",
   },
-  {
-    type: "viewer",
-    title: "Active Schema",
-    prop: "activeSchema",
-  },
-  {
-    type: "viewer",
-    title: "Active UI",
-    prop: "activeUiSchema",
-  },
 ];
 
-export default function playground(FormComponent, editors = DEFAULT_EDITORS) {
+export default function playground(FormComponent, extraEditors = []) {
+  const editors = DEFAULT_EDITORS.concat(extraEditors);
   class App extends Component {
     constructor(props) {
       super(props);
-      const { schema, uiSchema, formData, rules, extraActions } = this.props;
-      this.state = {
-        schema,
-        uiSchema,
-        formData,
-        extraActions,
-        rules,
-        formParams: { liveValidate: false },
-        conf: { schema, uiSchema },
-      };
+      this.state = editors.reduce(
+        (agg, { prop }) => Object.assign({}, agg, { [prop]: this.props[prop] }),
+        {}
+      );
     }
 
     onUpdateMeta = formParams => this.setState({ formParams });
@@ -84,10 +64,10 @@ export default function playground(FormComponent, editors = DEFAULT_EDITORS) {
             onUpdateMeta={this.onUpdateMeta}
             formParams={this.state.formParams}
           />
-          <div className="col-md-4">
+          <div className="col-md-6">
             <FormComponent onChange={this.onFormChange} {...conf} />
           </div>
-          <div className="col-md-8">
+          <div className="col-md-6">
             <EditorsPanel editors={editors} />
           </div>
         </div>

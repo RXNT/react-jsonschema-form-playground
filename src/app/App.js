@@ -6,7 +6,25 @@ import Form from "react-jsonschema-form";
 
 import samples from "./samples";
 
-let FormToDisplay = playground(applyRules(Form));
+let editors = [
+  {
+    type: "json",
+    title: "Rules",
+    prop: "rules",
+  },
+  {
+    type: "viewer",
+    title: "Active Schema",
+    prop: "activeSchema",
+  },
+  {
+    type: "viewer",
+    title: "Active UI",
+    prop: "activeUiSchema",
+  },
+];
+
+let FormToDisplay = playground(applyRules(Form), editors);
 
 export default class ResultForm extends Component {
   constructor(props) {
@@ -20,7 +38,6 @@ export default class ResultForm extends Component {
   }
 
   onSchemaConfChange = ({ schema, uiSchema }) => {
-    console.log(`Schema configuration change ${JSON.stringify(schema)}`);
     this.setState({ activeSchema: schema, activeUiSchema: uiSchema });
   };
 
