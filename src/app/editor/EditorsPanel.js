@@ -6,7 +6,13 @@ import PropTypes from "prop-types";
 
 const toJson = val => JSON.stringify(val, null, 2);
 
-export default class JsonEditors extends Component {
+export default class EditorsPanel extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { active: this.props.editors[0].title };
+  }
+
   setActive = active => this.setState({ active });
 
   toView = editor => {
@@ -42,8 +48,7 @@ export default class JsonEditors extends Component {
 
   render() {
     let { editors } = this.props;
-    let activeTitle =
-      this.state && this.state.active ? this.state.active : this.props.active;
+    let activeTitle = this.state.active;
     let activeEditor = editors.find(editor => editor.title === activeTitle);
 
     return (
@@ -67,7 +72,6 @@ export default class JsonEditors extends Component {
   }
 }
 
-JsonEditors.propTypes = {
-  active: PropTypes.string.isRequired,
+EditorsPanel.propTypes = {
   editors: PropTypes.array.isRequired,
 };

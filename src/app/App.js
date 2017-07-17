@@ -1,128 +1,36 @@
 import React, { Component } from "react";
 import applyRules from "react-jsonschema-form-conditionals";
-import PredicatesRuleEngine from "react-jsonschema-form-conditionals/dist/engine/SimplifiedRuleEngineFactory";
-// import CacheControlRulesEngine from "react-jsonschema-form-conditionals/dist/engine/CacheControlEngineFactory";
+import playground from "./playground";
+import SimplifiedRuleEngineFactory from "react-jsonschema-form-conditionals/lib/engine/SimplifiedRuleEngineFactory";
 import Form from "react-jsonschema-form";
-import schemaValidator from "jsonschema-structure-validator";
-import EditorsPanel from "./editor/EditorsPanel";
-import Header from "./Header";
+
 import samples from "./samples";
 
-let FormWithConditionals = applyRules(Form);
+let FormToDisplay = playground(applyRules(Form));
 
-export class App extends Component {
+export default class ResultForm extends Component {
   constructor(props) {
     super(props);
-    // initialize state with Simple data sample
-    const { schema, uiSchema, formData, rules, extraActions } = samples.Simple;
-    this.state = {
-      schema,
-      uiSchema,
-      formData,
-      extraActions,
-      rules,
-      conf: { schema, uiSchema },
-      liveValidate: false,
-    };
+    const { schema, uiSchema } = samples.Simple;
+    this.state = samples.Simple;
+    this.state = Object.assign({}, samples.Simple, {
+      activeSchema: schema,
+      activeUiSchema: uiSchema,
+    });
   }
 
-  onRulesEdited = rules => this.setState({ rules });
-  onSchemaEdited = schema => {
-    schemaValidator(schema);
-    this.setState({ schema });
-  };
-  onUISchemaEdited = uiSchema => this.setState({ uiSchema });
-  onFormDataEdited = formData => this.setState({ formData });
-
-  onFormDataChange = ({ formData }) => this.setState({ formData });
-  onSchemaConfChange = conf => this.setState({ conf });
-
-  onUpdateMeta = formParams => this.setState({ formParams });
-
-  onExtraActionsChange = extraActions => this.setState({ extraActions });
-
-  load = data => {
-    this.setState({ form: false }, _ => this.setState({ ...data, form: true }));
+  onSchemaConfChange = ({ schema, uiSchema }) => {
+    console.log(`Schema configuration change ${JSON.stringify(schema)}`);
+    this.setState({ activeSchema: schema, activeUiSchema: uiSchema });
   };
 
   render() {
-    const {
-      schema,
-      uiSchema,
-      formData,
-      rules,
-      extraActions,
-      formParams,
-      conf,
-    } = this.state;
-
-    let onError = this.onError;
-
-    let editors = [
-      {
-        type: "json",
-        title: "Schema",
-        source: schema,
-        onChange: this.onSchemaEdited,
-        onError,
-      },
-      {
-        type: "json",
-        title: "UI",
-        source: uiSchema,
-        onChange: this.onUISchemaEdited,
-        onError,
-      },
-      {
-        type: "json",
-        title: "Rules",
-        source: rules,
-        onChange: this.onRulesEdited,
-        onError,
-      },
-      {
-        type: "json",
-        title: "Data",
-        source: formData,
-        onChange: this.onFormDataEdited,
-        onError,
-      },
-      {
-        type: "viewer",
-        title: "Active Schema",
-        source: conf.schema,
-      },
-      {
-        type: "viewer",
-        title: "Active UI",
-        source: conf.uiSchema,
-      },
-    ];
-
     return (
-      <div className="container-fluid">
-        <Header
-          load={this.load}
-          onUpdateMeta={this.onUpdateMeta}
-          formParams={this.state.formParams}
-        />
-        <div className="col-md-4">
-          <FormWithConditionals
-            onSchemaConfChange={this.onSchemaConfChange}
-            // onChange={this.onFormDataChange}
-            rules={rules}
-            rulesEngine={PredicatesRuleEngine}
-            extraActions={extraActions}
-            {...formParams}
-            formData={formData}
-            schema={schema}
-            uiSchema={uiSchema}
-          />
-        </div>
-        <div className="col-md-8">
-          <EditorsPanel active={editors[0].title} editors={editors} />
-        </div>
-      </div>
+      <FormToDisplay
+        onSchemaConfChange={this.onSchemaConfChange}
+        {...this.state}
+        rulesEngine={SimplifiedRuleEngineFactory}
+      />
     );
   }
 }

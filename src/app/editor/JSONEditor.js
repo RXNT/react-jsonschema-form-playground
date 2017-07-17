@@ -69,7 +69,6 @@ export default class JsonEditor extends Component {
         this.props.onChange(fromJson(this.state.code));
       } catch (error) {
         this.setState({ valid: false, code, error });
-        this.props.onError(error);
       }
     }, 750);
   };

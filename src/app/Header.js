@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Selector from "./Selector";
 import Form from "react-jsonschema-form";
 
 const liveValidateSchema = {
@@ -28,10 +27,6 @@ export default class Header extends Component {
     return (
       <div>
         <div className="container-fluid">
-          <h1>Playground</h1>
-          <div className="col-md-4">
-            <Selector onSelected={this.props.load} />
-          </div>
           <Form
             schema={liveValidateSchema}
             uiSchema={liveUiSchema}
