@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import EditorsPanel from "./editor/EditorsPanel";
 import Header from "./Header";
+import deepEqual from "deep-equal";
 
 export const DEFAULT_EDITORS = [
   {
@@ -25,22 +26,27 @@ export default function playground(FormComponent, extraEditors = []) {
   class App extends Component {
     constructor(props) {
       super(props);
-      this.state = editors.reduce(
-        (agg, { prop }) => Object.assign({}, agg, { [prop]: this.props[prop] }),
-        {}
-      );
+      this.state = this.toState(this.props);
     }
 
     onUpdateMeta = formParams => this.setState({ formParams });
     onFormChange = ({ formData }) => this.setState({ formData });
 
-    load = data => {
-      this.setState({ form: false }, _ =>
-        this.setState({ ...data, form: true })
+    toState = props => {
+      return editors.reduce(
+        (agg, { prop }) => Object.assign({}, agg, { [prop]: props[prop] }),
+        {}
       );
     };
 
+    componentWillReceiveProps(nextProps) {
+      if (!deepEqual(this.props, nextProps)) {
+        this.setState(this.toState(nextProps));
+      }
+    }
+
     render() {
+      console.log("Rendering");
       editors.map(editor => {
         editor.source = this.state[editor.prop]
           ? this.state[editor.prop]

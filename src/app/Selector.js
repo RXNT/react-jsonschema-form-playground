@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { shouldRender } from "./utils";
-import samples from "./samples";
 import PropTypes from "prop-types";
 
 export default class Selector extends Component {
   constructor(props) {
     super(props);
-    this.state = { current: "Simple" };
+    let current = this.props.current;
+    this.state = { current };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -17,14 +17,14 @@ export default class Selector extends Component {
     return event => {
       event.preventDefault();
       this.setState({ current: label });
-      setImmediate(() => this.props.onSelected(samples[label]));
+      setImmediate(() => this.props.onSelected(this.props.states[label]));
     };
   };
 
   render() {
     return (
       <ul className="nav nav-pills">
-        {Object.keys(samples).map((label, i) => {
+        {Object.keys(this.props.states).map((label, i) => {
           return (
             <li
               key={i}
@@ -42,5 +42,6 @@ export default class Selector extends Component {
 }
 
 Selector.propTypes = {
-  onSelected: PropTypes.func,
+  states: PropTypes.object.isRequired,
+  onSelected: PropTypes.func.isRequired,
 };

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import applyRules from "react-jsonschema-form-conditionals";
 import playground from "./playground";
-import SimplifiedRuleEngineFactory from "react-jsonschema-form-conditionals/lib/engine/SimplifiedRuleEngineFactory";
+import playgroundWithStates from "./playgroundWithStates";
 import Form from "react-jsonschema-form";
-
 import samples from "./samples";
 
 let editors = [
@@ -24,17 +23,14 @@ let editors = [
   },
 ];
 
-let FormToDisplay = playground(applyRules(Form), editors);
+let FormToDisplay = playgroundWithStates(
+  playground(applyRules(Form), editors),
+  samples
+);
 
 export default class ResultForm extends Component {
   constructor(props) {
     super(props);
-    const { schema, uiSchema } = samples.Simple;
-    this.state = samples.Simple;
-    this.state = Object.assign({}, samples.Simple, {
-      activeSchema: schema,
-      activeUiSchema: uiSchema,
-    });
   }
 
   onSchemaConfChange = ({ schema, uiSchema }) => {
@@ -42,12 +38,9 @@ export default class ResultForm extends Component {
   };
 
   render() {
+    let conf = Object.assign({}, this.props, this.state);
     return (
-      <FormToDisplay
-        onSchemaConfChange={this.onSchemaConfChange}
-        {...this.state}
-        rulesEngine={SimplifiedRuleEngineFactory}
-      />
+      <FormToDisplay onSchemaConfChange={this.onSchemaConfChange} {...conf} />
     );
   }
 }
