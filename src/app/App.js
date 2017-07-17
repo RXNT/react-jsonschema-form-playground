@@ -56,34 +56,19 @@ export class App extends Component {
       conf,
     } = this.state;
 
-    let CurrentViews = (
-      <div className="col-md-6">
-        <FormWithConditionals
-          onSchemaConfChange={this.onSchemaConfChange}
-          // onChange={this.onFormDataChange}
-          rules={rules}
-          rulesEngine={PredicatesRuleEngine}
-          extraActions={extraActions}
-          {...formParams}
-          formData={formData}
-          schema={schema}
-          uiSchema={uiSchema}
-        />
-      </div>
-    );
     let onError = this.onError;
 
     let editors = [
       {
         type: "json",
-        title: "JSON schema",
+        title: "Schema",
         source: schema,
         onChange: this.onSchemaEdited,
         onError,
       },
       {
         type: "json",
-        title: "UI schema",
+        title: "UI",
         source: uiSchema,
         onChange: this.onUISchemaEdited,
         onError,
@@ -97,7 +82,7 @@ export class App extends Component {
       },
       {
         type: "json",
-        title: "Form Data",
+        title: "Data",
         source: formData,
         onChange: this.onFormDataEdited,
         onError,
@@ -109,7 +94,7 @@ export class App extends Component {
       },
       {
         type: "viewer",
-        title: "Active UI Schema",
+        title: "Active UI",
         source: conf.uiSchema,
       },
     ];
@@ -121,8 +106,22 @@ export class App extends Component {
           onUpdateMeta={this.onUpdateMeta}
           formParams={this.state.formParams}
         />
-        {CurrentViews}
-        <EditorsPanel active={editors[0].title} editors={editors} />
+        <div className="col-md-4">
+          <FormWithConditionals
+            onSchemaConfChange={this.onSchemaConfChange}
+            // onChange={this.onFormDataChange}
+            rules={rules}
+            rulesEngine={PredicatesRuleEngine}
+            extraActions={extraActions}
+            {...formParams}
+            formData={formData}
+            schema={schema}
+            uiSchema={uiSchema}
+          />
+        </div>
+        <div className="col-md-8">
+          <EditorsPanel active={editors[0].title} editors={editors} />
+        </div>
       </div>
     );
   }

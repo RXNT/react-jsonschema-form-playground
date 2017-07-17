@@ -61,28 +61,32 @@ export default class JsonEditor extends Component {
   }
 
   onCodeChange = code => {
-    this.setState({ valid: true, code });
-    setImmediate(() => {
+    this.setState({ valid: true, code, loading: true });
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.setState({ loading: false });
       try {
         this.props.onChange(fromJson(this.state.code));
       } catch (error) {
         this.setState({ valid: false, code, error });
         this.props.onError(error);
       }
-    });
+    }, 750);
   };
 
   render() {
     const { title } = this.props;
-    const icon = this.state.valid ? "ok" : "remove";
-    const cls = this.state.valid ? "valid" : "invalid";
+    let { valid, loading } = this.state;
+    let icon = loading ? "refresh" : valid ? "ok" : "remove";
     return (
       <div>
         {!this.state.valid && <Error error={this.state.error} />}
         <div className="panel panel-default">
           <div className="panel-heading">
-            <span className={`${cls} glyphicon glyphicon-${icon}`} />
-            {" " + title}
+            <span className={`glyphicon glyphicon-${icon}`} />
+            <span>
+              {" "}{title}
+            </span>
           </div>
           <Codemirror
             value={this.state.code}

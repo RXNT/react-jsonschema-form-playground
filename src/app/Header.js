@@ -26,9 +26,9 @@ const liveUiSchema = {
 export default class Header extends Component {
   render() {
     return (
-      <div className="page-header">
-        <h1>react-jsonschema-form</h1>
-        <div className="row">
+      <div>
+        <div className="container-fluid">
+          <h1>Playground</h1>
           <div className="col-md-4">
             <Selector onSelected={this.props.load} />
           </div>

@@ -47,7 +47,7 @@ export default class JsonEditors extends Component {
     let activeEditor = editors.find(editor => editor.title === activeTitle);
 
     return (
-      <div className="col-md-6">
+      <div>
         <ul className="nav nav-pills">
           {editors.map(({ title }) =>
             <li
