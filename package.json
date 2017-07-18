@@ -6,7 +6,7 @@
   "version": "0.0.1",
   "scripts": {
     "build:lib": "rimraf lib && cross-env NODE_ENV=production babel -d lib/ src/",
-    "build:dist": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack.config.dist.js --optimize-minimize && cp src/index.prod.html build/index.html",
+    "build:dist": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack.config.dist.js --optimize-minimize",
     "cs-check": "prettier -l $npm_package_prettierOptions '{src,test}/**/*.js'",
     "cs-format": "prettier $npm_package_prettierOptions '{src,test}/**/*.js' --write",
     "dist": "npm run build:lib && npm run build:dist",
@@ -41,24 +41,28 @@
     "node": ">=6"
   },
   "peerDependencies": {
-    "react": "^15.0.0"
+    "react": "^15.0.0",
+    "prop-types": "^15.5.10",
+    "react-jsonschema-form": "^0.49.0"
   },
   "dependencies": {
-    "json-rules-engine-simplified": "^0.1.3",
-    "jsonschema-structure-validator": "0.0.2",
-    "predicate": "^1.0.0",
-    "prop-types": "^15.5.10",
-    "react-jsonschema-form": "^0.49.0",
-    "react-jsonschema-form-conditionals": "^0.2.3",
-    "selectn": "^1.1.2"
+    "codemirror": "^5.27.4",
+    "deep-equal": "^1.0.1",
+    "react-codemirror": "^1.0.0"
   },
   "devDependencies": {
+    "predicate": "^1.0.0",
+    "selectn": "^1.1.2",
+    "json-rules-engine-simplified": "^0.1.3",
+    "jsonschema-structure-validator": "0.0.2",
+    "react-jsonschema-form-conditionals": "^0.2.3",
     "atob": "^2.0.3",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.1.1",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
@@ -66,7 +70,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.24.1",
-    "codemirror": "^5.27.4",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "eslint": "^4.2.0",
@@ -89,13 +92,10 @@
     "prettier": "^1.5.2",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
-    "react-codemirror": "^1.0.0",
     "react-dom": "^15.6.1",
-    "react-redux": "5.0.5",
     "react-test-renderer": "^15.6.1",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
-    "redux": "3.7.1",
     "regenerator-runtime": "^0.10.5",
     "rimraf": "^2.6.1",
     "sinon": "^2.3.6",

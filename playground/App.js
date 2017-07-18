@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import applyRules from "react-jsonschema-form-conditionals";
-import playground from "./playground";
-import playgroundWithStates from "./playgroundWithStates";
+import playground from "../src/playground";
+import playgroundWithStates from "../src/playgroundWithStates";
 import Form from "react-jsonschema-form";
 import samples from "./samples";
 
