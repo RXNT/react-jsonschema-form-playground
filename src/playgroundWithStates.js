@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Selector from "./Selector";
 
-export default function playgroundWithStates(FormComponent, states = {}) {
+export function playgroundWithStates(FormComponent, states = {}) {
   class ResultForm extends Component {
     constructor(props) {
       super(props);
