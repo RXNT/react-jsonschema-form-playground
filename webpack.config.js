@@ -4,7 +4,7 @@ var webpack = require("webpack");
 module.exports = {
   devtool: "eval",
   entry: [
-    "./src/app",
+    "./playground/app",
   ],
   output: {
     path: path.join(__dirname, "build"),
@@ -19,7 +19,8 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: [
-          path.resolve(__dirname, "src")
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "playground")
         ],
         exclude: [
           path.resolve(__dirname, "node_modules"),
@@ -32,6 +33,7 @@ module.exports = {
         test: /\.css$/,
         include: [
           path.join(__dirname, "css"),
+          path.join(__dirname, "playground"),
           path.join(__dirname, "node_modules"),
         ],
         use: [
@@ -42,7 +44,7 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: path.join(__dirname, "src"),
+    contentBase: path.join(__dirname, "playground"),
     historyApiFallback: true,
     hot: true,
     lazy: false,
