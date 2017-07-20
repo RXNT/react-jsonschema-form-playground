@@ -1,5 +1,5 @@
 import SimplifiedRuleEngineFactory from "react-jsonschema-form-conditionals/lib/engine/SimplifiedRuleEngineFactory";
-import { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy, IntervalUpdateStrategy } from "react-jsonschema-form-manager";
+import { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy } from "react-jsonschema-form-manager";
 
 const simple = {
   schema: {

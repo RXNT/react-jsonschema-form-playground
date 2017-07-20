@@ -1,5 +1,5 @@
 import Cache from "react-jsonschema-form-conditionals/lib/engine/CacheControlEngineFactory";
-import { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy, IntervalUpdateStrategy } from "react-jsonschema-form-manager";
+import { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy } from "react-jsonschema-form-manager";
 
 const cache = {
   schema: {

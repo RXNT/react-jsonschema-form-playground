@@ -3,7 +3,7 @@ import applyRules from "react-jsonschema-form-conditionals";
 import playground, { playgroundWithStates } from "../../src";
 import Form from "react-jsonschema-form";
 
-import withManager, { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy, IntervalUpdateStrategy } from "react-jsonschema-form-manager";
+import withManager from "react-jsonschema-form-manager";
 
 import samples from "./samples";
 
