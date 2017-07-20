@@ -1,4 +1,5 @@
 import SimplifiedRuleEngineFactory from "react-jsonschema-form-conditionals/lib/engine/SimplifiedRuleEngineFactory";
+import { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy, IntervalUpdateStrategy } from "react-jsonschema-form-manager";
 
 const simple = {
   schema: {
@@ -82,4 +83,10 @@ const simple = {
   rulesEngine: SimplifiedRuleEngineFactory,
 };
 
-export default simple;
+const simpleConfig = {
+  configResolver: new StaticConfigResolver(simple),
+  manager: new LocalStorageFormManager("simple"),
+  updateStrategy: new InstantUpdateStrategy()
+};
+
+export default simpleConfig;

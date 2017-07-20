@@ -1,4 +1,5 @@
 import Cache from "react-jsonschema-form-conditionals/lib/engine/CacheControlEngineFactory";
+import { StaticConfigResolver, LocalStorageFormManager, InstantUpdateStrategy, IntervalUpdateStrategy } from "react-jsonschema-form-manager";
 
 const cache = {
   schema: {
@@ -83,4 +84,10 @@ const cache = {
   rulesEngine: Cache,
 };
 
-export default cache;
+const cacheConfig = {
+  configResolver: new StaticConfigResolver(cache),
+  manager: new LocalStorageFormManager("cache"),
+  updateStrategy: new InstantUpdateStrategy()
+};
+
+export default cacheConfig;
