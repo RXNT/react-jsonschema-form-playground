@@ -46,7 +46,6 @@ export default function playground(FormComponent, extraEditors = []) {
     }
 
     render() {
-      console.log("Rendering");
       editors.map(editor => {
         editor.source = this.state[editor.prop]
           ? this.state[editor.prop]
